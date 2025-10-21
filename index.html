@@ -606,6 +606,35 @@
                 display: none !important
             }
         }
+        
+        /* Custom CSS to replace MAGNETTO with DEVRAJ */
+        h1:has(*), h1, .framer-text, [class*="framer"] {
+            visibility: visible !important;
+        }
+        
+        /* Hide any element that contains the text MAGNETTO and replace with DEVRAJ */
+        body * {
+            font-family: inherit !important;
+        }
+    </style>
+    <style>
+        /* CSS Text Replacement for MAGNETTO → DEVRAJ */
+        .text-replacement-magnetto {
+            visibility: hidden;
+            position: relative;
+        }
+        .text-replacement-magnetto::after {
+            content: 'DEVRAJ';
+            visibility: visible;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
     <style data-framer-css-ssr-minified data-framer-components="framer-lib-cursors-host framer-rT0Mt framer-4kEMV PropertyOverrides framer-t8ach framer-bGFer framer-UMDk0 framer-1g5Oh framer-L08PY framer-lib-form-plain-text-input framer-2Q8zM framer-L4ZxG framer-GvCMP framer-9iCMQ framer-DfMqf framer-YOy7n framer-CtpCi framer-9IQsL framer-zMdzc framer-yJAKf framer-4G32W framer-mFGPN">
         html,
@@ -7688,8 +7717,43 @@
 
     <!-- End of bodyEnd -->
     <script>
-// Override any Magnetto references
+// Override any Magnetto references - preserving fonts and styles
 function replaceText() {
+    // Find all elements
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(function(el) {
+        // Get the element's own text (not including children)
+        let ownText = '';
+        for (let i = 0; i < el.childNodes.length; i++) {
+            const child = el.childNodes[i];
+            if (child.nodeType === 3) { // Text node
+                ownText += child.textContent;
+                // Try to replace the text
+                if (child.textContent.includes('Magnetto') || child.textContent.includes('MAGNETTO')) {
+                    child.textContent = child.textContent.replace(/MAGNETTO/g, 'DEVRAJ').replace(/Magnetto/g, 'Devraj');
+                }
+            }
+        }
+        
+        // If this element directly contains MAGNETTO text, add CSS class
+        if (ownText.includes('MAGNETTO')) {
+            el.classList.add('text-replacement-magnetto');
+            // Also try direct replacement
+            if (el.textContent === 'MAGNETTO') {
+                el.textContent = 'DEVRAJ';
+            }
+        }
+        
+        // Check data attributes
+        if (el.hasAttribute('data-framer-name')) {
+            const name = el.getAttribute('data-framer-name');
+            if (name && (name.includes('Magnetto') || name.includes('MAGNETTO'))) {
+                el.setAttribute('data-framer-name', name.replace(/MAGNETTO/g, 'DEVRAJ').replace(/Magnetto/g, 'Devraj'));
+            }
+        }
+    });
+    
+    // Also use TreeWalker for thorough text node replacement
     const walker = document.createTreeWalker(
         document.body,
         NodeFilter.SHOW_TEXT,
@@ -7720,14 +7784,25 @@ setTimeout(function() {
         subtree: true,
         characterData: true
     });
-    // Run replacement again after observer is set up
     replaceText();
-}, 1000);
+}, 100);
 
-// Also run after page load to catch late-loading content
+// Run multiple times to catch Framer's dynamic rendering
+setTimeout(replaceText, 200);
+setTimeout(replaceText, 500);
+setTimeout(replaceText, 1000);
+setTimeout(replaceText, 1500);
+setTimeout(replaceText, 2000);
+setTimeout(replaceText, 3000);
+setTimeout(replaceText, 4000);
+setTimeout(replaceText, 5000);
+
+// Also run after page load
 window.addEventListener('load', function() {
+    setTimeout(replaceText, 100);
     setTimeout(replaceText, 500);
-    setTimeout(replaceText, 1500);
+    setTimeout(replaceText, 1000);
+    setTimeout(replaceText, 2000);
     setTimeout(replaceText, 3000);
 });
 </script>
