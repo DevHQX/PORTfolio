@@ -7713,7 +7713,7 @@
     <script>
 // Override any Magnetto references
 document.addEventListener('DOMContentLoaded', function() {
-    // Replace any text content containing Magnetto
+    // Replace any text content containing Magnetto or MAGNETTO
     const walker = document.createTreeWalker(
         document.body,
         NodeFilter.SHOW_TEXT,
@@ -7723,8 +7723,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let node;
     while (node = walker.nextNode()) {
-        if (node.textContent.includes('Magnetto')) {
-            node.textContent = node.textContent.replace(/Magnetto/g, 'Devraj');
+        if (node.textContent.includes('Magnetto') || node.textContent.includes('MAGNETTO')) {
+            node.textContent = node.textContent.replace(/MAGNETTO/g, 'DEVRAJ').replace(/Magnetto/g, 'Devraj');
         }
     }
 });
